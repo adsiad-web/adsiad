@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env
+.env.local
+*.log
+.DS_Store
+data/inquiries.json
+.cursor
+tsconfig.tsbuildinfo
+**/__MACOSX/
+**/.DS_Store

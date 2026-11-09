@@ -1,0 +1,603 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@font-face {
+  font-family: "Retro Signature";
+  src: url("/fonts/RetroSignature.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --color-ink: #0c0c0c;
+  --color-ink-soft: #1a1a1a;
+  --color-paper: #f3efe6;
+  --color-paper-deep: #e7e1d4;
+  --color-red: #e31e24;
+  --color-red-deep: #b41218;
+  --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+  --font-script: "Retro Signature", cursive;
+}
+
+:root {
+  --bg: var(--color-paper);
+  --fg: var(--color-ink);
+  --muted: #4a463e;
+  --line: rgba(12, 12, 12, 0.1);
+  --nav: var(--bg);
+  --card: #fbf8f2;
+}
+
+.dark {
+  --bg: #070707;
+  --fg: #f4efe6;
+  --muted: #a39c90;
+  --line: rgba(244, 239, 230, 0.12);
+  --nav: var(--bg);
+  --card: #121110;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* keep anchor targets clear of the sticky header */
+  scroll-padding-top: 6rem;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01" on, "kern" on;
+  text-rendering: optimizeLegibility;
+  /* notch / rounded-corner safe areas (viewport-fit=cover) */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+a {
+  text-underline-offset: 0.22em;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Below desktop, text fields are at least 16px so iOS Safari does not zoom on focus. */
+@media (max-width: 1023px) {
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+select {
+  appearance: none;
+  background: transparent;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--color-red);
+}
+
+:focus-visible {
+  outline: 1px solid var(--color-red);
+  outline-offset: 3px;
+}
+
+/* Ring / own focus styles take over; keep the red outline off those controls. */
+.outline-none:focus-visible {
+  outline: none;
+  outline-offset: 0;
+}
+
+/* Brand red is 4.3:1 on the dark background; below desktop, lift red text slightly for AA
+   contrast. Buttons keep inheriting their colour, as before. Desktop unchanged. */
+@media (max-width: 1023px) {
+  .dark .text-red:not(button) {
+    color: #ff5a5f;
+  }
+}
+
+/* Phones: tiny uppercase labels (0.62–0.7rem) get a 12px floor. Desktop unchanged. */
+@media (max-width: 639px) {
+  .text-\[0\.62rem\]:not(button),
+  .text-\[0\.65rem\]:not(button),
+  .text-\[0\.68rem\]:not(button),
+  .text-\[0\.7rem\]:not(button) {
+    font-size: 0.75rem;
+  }
+}
+
+::selection {
+  background: var(--color-red);
+  color: white;
+}
+
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  opacity: 0.035;
+  background-image: url("/brand/grain.png");
+  background-size: 180px 180px;
+  transform: translateZ(0);
+}
+
+.dark .grain {
+  opacity: 0.02;
+}
+
+/* Brand cursor as a native (hardware) cursor: it moves with the OS pointer, with no
+   per-frame JS or compositing. Red disc in a pink ring; a smaller disc over clickables. */
+@media (pointer: fine) {
+  html {
+    cursor: url("/brand/cursor.svg") 12 12, auto;
+  }
+  a, button, summary, label, select, [role="button"], [role="link"], .cursor-pointer,
+  a *, button *, summary *, label *, [role="button"] *, [role="link"] * {
+    cursor: url("/brand/cursor-hot.svg") 12 12, pointer;
+  }
+  textarea, [contenteditable="true"],
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="file"]) {
+    cursor: text;
+  }
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.ticker {
+  animation: ticker 42s linear infinite;
+}
+
+.ticker:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker {
+    animation: none;
+  }
+}
+
+@keyframes firm-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.35rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.firm-in {
+  animation: firm-in 480ms ease;
+}
+
+.reveal-frame {
+  overflow: hidden;
+}
+
+.reveal-photo {
+  transform: none;
+  transition: transform 700ms ease;
+}
+
+.shift-copy {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 320ms ease;
+}
+
+.shift-copy > span {
+  overflow: hidden;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .reveal-photo {
+    transform: scale(1.14);
+  }
+
+  .group:hover .reveal-photo,
+  .group:focus-within .reveal-photo {
+    transform: none;
+  }
+
+  .shift-copy {
+    grid-template-rows: 0fr;
+  }
+
+  .group:hover .shift-copy,
+  .group:focus-within .shift-copy {
+    grid-template-rows: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .firm-in,
+  .reveal-photo,
+  .shift-copy {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  .shift-copy {
+    grid-template-rows: 1fr;
+  }
+}
+
+.ink-flip {
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.ink-flip:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  /* Re-point the theme tokens inside the flipped row so secondary (muted) text and
+     rules flip too, instead of staying dark-on-dark. ~11:1 on ink. */
+  --fg: var(--color-paper);
+  --muted: rgba(243, 239, 230, 0.78);
+  --line: rgba(243, 239, 230, 0.16);
+}
+
+.dark .ink-flip:hover {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  /* ~9:1 on paper. */
+  --fg: var(--color-ink);
+  --muted: rgba(12, 12, 12, 0.74);
+  --line: rgba(12, 12, 12, 0.14);
+}
+
+/* Header language switch: active locale in brand red, tuned for AA on the header
+   (red-deep ~6:1 on paper; lifted red ~6.6:1 on the dark background). */
+.locale-on {
+  color: var(--color-red-deep);
+}
+
+.dark .locale-on {
+  color: #ff5a5f;
+}
+
+.seal {
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+.seal-art {
+  display: block;
+  isolation: isolate;
+}
+
+.seal-face {
+  position: relative;
+  z-index: 1;
+}
+
+.seal-band {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  animation: seal-lock 1.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.dark .seal-band {
+  mix-blend-mode: plus-lighter;
+}
+
+.seal-band-ink {
+  --tx: 16px;
+  --ty: -10px;
+  --rot: -3.5deg;
+  filter: brightness(0);
+}
+
+.dark .seal-band-ink {
+  filter: brightness(0) invert(1);
+}
+
+.seal-on-dark .seal-band {
+  mix-blend-mode: plus-lighter;
+}
+
+.seal-lg .seal-band-ink {
+  --tx: 6cqi;
+  --ty: -4cqi;
+}
+
+.seal-on-dark .seal-band-ink {
+  filter: brightness(0) invert(1);
+}
+
+.seal-lg .seal-band-red {
+  --tx: -4.5cqi;
+  --ty: 4.2cqi;
+}
+
+.seal-band-red {
+  --tx: -12px;
+  --ty: 11px;
+  --rot: 2.5deg;
+  animation-delay: 90ms;
+}
+
+@keyframes seal-lock {
+  0% {
+    visibility: visible;
+    transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+  }
+  100% {
+    transform: none;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.lock-word {
+  display: inline-block;
+  animation: lock-word 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes lock-word {
+  from {
+    transform: translateY(0.22em);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ShutterPhoto sets data-shutter="armed" while the photo is below the fold and "open" once it is in view. */
+.shutter[data-shutter] .shutter-img {
+  transform: scale(1.12);
+  transition: transform 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
+}
+
+.shutter[data-shutter="open"] .shutter-img {
+  transform: none;
+}
+
+.shutter-slats {
+  display: none;
+}
+
+.shutter[data-shutter] .shutter-slats {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+}
+
+.shutter-slat {
+  flex: 1;
+  margin-right: -1px;
+  background: var(--bg);
+  border-bottom: 2px solid var(--color-red);
+  transition: transform 1s cubic-bezier(0.76, 0, 0.24, 1);
+  transition-delay: calc(var(--i) * 75ms);
+}
+
+.shutter[data-shutter="open"] .shutter-slat {
+  transform: translateY(-101%);
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+details[open] > summary > span {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal-band {
+    display: none;
+  }
+
+  .lock-word,
+  .cursor-dot-core,
+  .cursor-dot-focus {
+    animation: none;
+    transition: none;
+  }
+}
+
+.red-dot {
+  position: relative;
+}
+
+.red-dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0.08em;
+  width: 0.22em;
+  height: 0.22em;
+  border-radius: 999px;
+  background: var(--color-red);
+  transform: translateX(-50%);
+}
+
+.venue-map iframe {
+  filter: grayscale(1) contrast(1.08) brightness(0.97) sepia(0.12);
+}
+
+.dark .venue-map iframe {
+  filter: grayscale(1) invert(0.9) contrast(0.95) brightness(0.78) sepia(0.08);
+}
+
+/* Short laptops only. Taller screens keep the hero's own top padding. */
+@media (min-width: 64rem) and (max-height: 740px) {
+  .hero-fold {
+    padding-top: 0.25rem;
+  }
+}
+
+/* Opening frame. The delayed lift is the no-script fallback; JS starts it sooner.
+   Scroll locks as soon as the frame is in the document, and releases if it is never removed. */
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.preloader),
+  html:has(.preloader) body {
+    overflow: hidden;
+    animation: preloader-scroll 1ms linear 4s forwards;
+  }
+}
+
+html.preloader-on,
+html.preloader-on body {
+  overflow: hidden;
+}
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--bg);
+  animation: preloader-out 0.45s ease 2.9s forwards;
+}
+
+.preloader[data-phase="leave"] {
+  animation: preloader-out 0.4s ease forwards;
+}
+
+.preloader-stage {
+  position: relative;
+  width: min(92vw, 800px);
+  aspect-ratio: 4 / 3;
+  container-type: inline-size;
+}
+
+.preloader-stage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.preloader-focus {
+  position: absolute;
+  left: 17%;
+  top: 38%;
+  width: 66%;
+  height: 34%;
+  backdrop-filter: blur(5px);
+  mask-image: radial-gradient(ellipse at center, #000 42%, transparent 74%);
+  animation: preloader-focus 0.75s ease 0.4s forwards;
+}
+
+.preloader-dot-mask {
+  position: absolute;
+  left: 54.6%;
+  top: 39.5%;
+  width: 5.2%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #c46a45 url("/archive/news/logomanset.jpg") 47% 28% / 2200% auto no-repeat;
+  mask-image: radial-gradient(circle, #000 55%, transparent 72%);
+}
+
+.preloader-dot {
+  position: absolute;
+  left: 54.6%;
+  top: 39.5%;
+  width: 3.4%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #e31e24;
+  opacity: 0;
+  transform: translate(-50%, -14rem);
+  animation: preloader-drop 0.55s cubic-bezier(0.2, 1.25, 0.36, 1) 1.2s forwards;
+}
+
+.preloader-skip {
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.45rem 0.8rem;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@keyframes preloader-focus {
+  to {
+    backdrop-filter: blur(0);
+    opacity: 0;
+  }
+}
+
+@keyframes preloader-drop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -14rem);
+  }
+  18% {
+    opacity: 1;
+  }
+  74% {
+    transform: translate(-50%, calc(-50% + 0.28rem));
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes preloader-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes preloader-scroll {
+  to {
+    overflow: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none;
+  }
+
+  .preloader-focus,
+  .preloader-dot {
+    animation: none;
+  }
+
+  .preloader-focus {
+    opacity: 0;
+  }
+}

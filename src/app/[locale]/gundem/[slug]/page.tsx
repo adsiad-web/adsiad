@@ -76,7 +76,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ loc
         }
       />
       {item.image ? (
-        <img src={item.image} alt={loc(item.title, locale)} className="mx-auto mt-12 h-auto w-full max-w-7xl object-contain px-5 sm:mt-16 lg:mt-20 lg:px-8" />
+        <img src={item.image} alt={loc(item.title, locale)} className="mx-auto mt-12 h-auto max-h-[min(80svh,52rem)] w-full max-w-7xl object-contain px-5 sm:mt-16 lg:mt-20 lg:px-8" />
       ) : null}
       <div className="mx-auto grid max-w-7xl gap-10 px-5 pb-12 pt-8 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16 lg:px-8">
         <Prose bare>{body}</Prose>

@@ -121,7 +121,7 @@ export function Prose({ children, bare = false }: { children: string; bare?: boo
       const id = `b-${toc.length + 1}`;
       toc.push({ id, label: p });
       blocks.push(
-        <h2 key={i} id={id} className="mb-5 mt-14 scroll-mt-28 border-t border-[var(--line)] pt-8 break-words font-serif text-[1.3rem] leading-tight tracking-[0.02em] text-[var(--fg)] sm:text-[1.6rem] md:text-[1.85rem]">
+        <h2 key={i} id={id} className="mb-5 mt-14 scroll-mt-24 border-t border-[var(--line)] pt-8 break-words font-serif text-[1.3rem] leading-tight tracking-[0.02em] text-[var(--fg)] sm:scroll-mt-28 sm:text-[1.6rem] md:text-[1.85rem]">
           <span aria-hidden className="mb-3 block font-sans text-[0.66rem] font-semibold tracking-[0.22em] text-red">{String(toc.length).padStart(2, "0")}</span>
           {p}
         </h2>,

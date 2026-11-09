@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { cn } from "./cn";
@@ -66,9 +67,18 @@ export function Breadcrumb({ title, light }: { title: string; light?: boolean })
 
 export function SubNav({ light }: { light?: boolean }) {
   const { en, path, section } = useSection();
+  const ref = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = ref.current;
+    const on = nav?.querySelector<HTMLElement>("[aria-current=page]");
+    if (!nav || !on || nav.scrollWidth <= nav.clientWidth) return;
+    const a = on.getBoundingClientRect();
+    const b = nav.getBoundingClientRect();
+    nav.scrollLeft += a.left - b.left - (b.width - a.width) / 2;
+  }, [path]);
   if (!section) return null;
   return (
-    <nav aria-label={en ? "Section pages" : "Bölüm sayfaları"} className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] sm:mx-0 sm:px-0">
+    <nav ref={ref} aria-label={en ? "Section pages" : "Bölüm sayfaları"} className="-mx-5 overflow-x-auto px-5 [scrollbar-width:none] sm:mx-0 sm:px-0">
       <ul className={cn("flex w-max gap-1 sm:gap-2", DIR === "editorial" && "gap-6 sm:gap-8")}>
         {section.tabs.map((t) => {
           const on = path === t.href || (t.href !== section.tabs[0].href && path.startsWith(t.href + "/"));
@@ -98,14 +108,14 @@ export function SubNav({ light }: { light?: boolean }) {
 /** Section photo for the bold page header (real nav images). */
 export function HeaderArt() {
   const { key, path } = useSection();
-  const last = path.split("/").filter(Boolean).pop() || key;
   const map: Record<string, string> = { neden: "neden", firmalar: "firmalar", "uye-ol": "uye-ol", baskan: "baskan", kurullar: "kurullar", tarihce: "tarihce", vizyon: "vizyon", tuzuk: "tuzuk", "eski-baskanlar": "eski-baskanlar", "basin-kiti": "basin", sali: "sali", akademi: "akademi", projeler: "projeler", galeri: "galeri", takvim: "takvim", haberler: "haberler", duyurular: "duyurular", sosyal: "sosyal" };
-  const img = map[last] ?? (SECTIONS[key] ? (key === "faaliyetler" ? "sali" : key === "gundem" ? "haberler" : key) : "kurumsal");
+  const hit = path.split("/").filter(Boolean).reverse().find((s) => map[s]);
+  const img = hit ? map[hit] : SECTIONS[key] ? (key === "faaliyetler" ? "sali" : key === "gundem" ? "haberler" : key) : "kurumsal";
   return (
     <>
-      <img src={`/archive/nav/${img}.webp`} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover opacity-80 saturate-[0.8] dark:opacity-45 dark:saturate-100" />
-      <span aria-hidden className="absolute inset-0 hidden bg-[linear-gradient(90deg,#0c0c0c_0%,rgba(12,12,12,0.88)_45%,rgba(12,12,12,0.55)_100%)] dark:block" />
-      <span aria-hidden className="absolute inset-0 bg-[linear-gradient(90deg,#f3efe6_0%,rgba(243,239,230,0.94)_45%,rgba(243,239,230,0.6)_100%)] dark:hidden" />
+      <img src={`/archive/nav/${img}.webp`} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover opacity-80 saturate-[0.8] max-lg:blur-[4px] dark:opacity-45 dark:saturate-100" />
+      <span aria-hidden className="absolute inset-0 hidden bg-[linear-gradient(90deg,rgba(12,12,12,0.9)_0%,rgba(12,12,12,0.62)_100%)] dark:block lg:bg-[linear-gradient(90deg,#0c0c0c_0%,rgba(12,12,12,0.88)_45%,rgba(12,12,12,0.55)_100%)]" />
+      <span aria-hidden className="absolute inset-0 bg-[linear-gradient(90deg,rgba(243,239,230,0.95)_0%,rgba(243,239,230,0.8)_100%)] dark:hidden lg:bg-[linear-gradient(90deg,#f3efe6_0%,rgba(243,239,230,0.94)_45%,rgba(243,239,230,0.6)_100%)]" />
       <span aria-hidden className="absolute inset-x-0 bottom-0 h-1 bg-red" />
       <span aria-hidden className="absolute -bottom-24 -right-10 select-none font-serif text-[22rem] leading-none text-ink/[0.04] dark:text-white/[0.04]">35</span>
     </>

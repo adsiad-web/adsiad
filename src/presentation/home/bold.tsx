@@ -27,7 +27,7 @@ export async function BoldHome({ locale }: { locale: string }) {
           <img
             src="/archive/promo/185_adsiad-genel_kurul_3.jpg"
             alt=""
-            className="absolute inset-0 -z-20 h-full w-full object-cover object-[60%_40%] opacity-70 saturate-[0.85] dark:opacity-60 dark:saturate-100"
+            className="absolute left-0 top-0 -z-20 w-[125%] max-w-none object-cover object-[60%_40%] opacity-70 saturate-[0.85] [mask-image:linear-gradient(180deg,#000_55%,transparent)] dark:opacity-60 dark:saturate-100 lg:inset-0 lg:h-full lg:w-full lg:[mask-image:none]"
           />
           <span aria-hidden className="absolute inset-0 -z-10 hidden bg-[linear-gradient(100deg,#0c0c0c_8%,rgba(12,12,12,0.86)_45%,rgba(140,10,14,0.55)_100%)] dark:block" />
           <span aria-hidden className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,#f3efe6_12%,rgba(243,239,230,0.93)_42%,rgba(243,239,230,0.62)_72%,rgba(243,239,230,0.45)_100%)] dark:hidden" />
@@ -52,8 +52,8 @@ export async function BoldHome({ locale }: { locale: string }) {
                 </Btn>
               </div>
             </div>
-            <div className="order-1 flex justify-end lg:order-2 lg:col-span-5 lg:justify-center">
-              <LivingSeal className="seal-lg w-32 dark:drop-shadow-[0_10px_40px_rgba(227,30,36,0.25)] sm:w-44 lg:w-[min(100%,25rem)]" />
+            <div className="order-1 flex justify-center lg:order-2 lg:col-span-5">
+              <LivingSeal className="seal-lg w-[clamp(10rem,42vw,20rem)] dark:drop-shadow-[0_10px_40px_rgba(227,30,36,0.25)] lg:w-[min(100%,25rem)]" />
             </div>
           </div>
           <ol className="relative z-10 -mb-16 grid gap-3 sm:grid-cols-2 lg:-mb-24 lg:grid-cols-4">
@@ -79,13 +79,13 @@ export async function BoldHome({ locale }: { locale: string }) {
       </section>
 
       <section className="bg-red pb-14 pt-28 text-white lg:pb-20 lg:pt-40">
-        <dl className={`${container} grid grid-cols-2 gap-y-10 lg:grid-cols-3`}>
+        <dl className={`${container} grid grid-cols-3`}>
           {stats.map((s) => (
-            <div key={s.label} className="border-l border-white/30 pl-5">
-              <dd className="font-serif text-[clamp(3.4rem,7vw,6.5rem)] leading-none tabular-nums">
+            <div key={s.label} className="border-l border-white/30 pl-3 sm:pl-5">
+              <dd className="font-serif text-[clamp(2.25rem,11vw,4.5rem)] leading-none tabular-nums lg:text-[clamp(3.4rem,7vw,6.5rem)]">
                 <CountUp value={s.n} />
               </dd>
-              <dt className="mt-3 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-white/85">{s.label}</dt>
+              <dt className="mt-3 text-[0.6rem] font-semibold uppercase tracking-[0.14em] text-white/85 sm:text-[0.7rem] sm:tracking-[0.2em]">{s.label}</dt>
             </div>
           ))}
         </dl>
@@ -93,7 +93,7 @@ export async function BoldHome({ locale }: { locale: string }) {
 
       <section className="bg-[var(--bg)]">
         <div className={`${container} ${sectionY} grid items-center gap-12 lg:grid-cols-12`}>
-          <div className="relative lg:col-span-5">
+          <div className="relative w-full max-w-sm justify-self-center lg:col-span-5 lg:max-w-none">
             <div className="absolute -left-3 -top-3 h-full w-full rounded-3xl bg-red sm:-left-5 sm:-top-5" aria-hidden />
             <img src={d.chair?.image} alt={d.chair?.name} className="relative aspect-[4/5] w-full rounded-3xl object-cover object-top" />
           </div>

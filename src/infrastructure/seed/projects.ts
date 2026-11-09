@@ -87,7 +87,7 @@ export const projects: Project[] = [
     detail: true,
     title: { tr: "Adana’nın Gelinleri", en: "Adana’s Brides" },
     lead: {
-      tr: "Eski sitede adlı imza proje. Portakal Çiçeği Karnavalı kortejinde, yaklaşık 100 bin kişiyle.",
+      tr: "Eski sitede adı geçen imza proje. Portakal Çiçeği Karnavalı kortejinde, yaklaşık 100 bin kişiyle.",
       en: "Named on the old site. Walked the Orange Blossom Carnival with ~100,000 people.",
     },
     image: "/archive/promo/adana-gelinleri.jpg",

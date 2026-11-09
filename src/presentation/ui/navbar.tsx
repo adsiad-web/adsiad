@@ -181,7 +181,9 @@ export function Navbar({ data }: { data: NavbarData }) {
     if (!open) return;
     const root = document.documentElement;
     const previous = root.style.overflow;
+    const previousBody = document.body.style.overflow;
     root.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
       setOpenedAt(null);
@@ -195,6 +197,7 @@ export function Navbar({ data }: { data: NavbarData }) {
     desktop.addEventListener("change", onResize);
     return () => {
       root.style.overflow = previous;
+      document.body.style.overflow = previousBody;
       window.removeEventListener("keydown", onKey);
       desktop.removeEventListener("change", onResize);
     };

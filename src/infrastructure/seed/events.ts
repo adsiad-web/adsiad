@@ -197,7 +197,7 @@ export const events: EventItem[] = [
       en: "Adana’s Brides — Orange Blossom Carnival",
     },
     excerpt: {
-      tr: "Eski sitede adlı imza proje, karnaval kortejinde.",
+      tr: "Eski sitede adı geçen imza proje, karnaval kortejinde.",
       en: "The civic project named on the old site, in the carnival.",
     },
     image: "/archive/promo/adana-gelinleri.jpg",
